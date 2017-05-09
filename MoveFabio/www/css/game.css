@@ -1,3 +1,8 @@
 body{
 	margin: 0px;
+	background-color: #004f64;
+}
+#phaser{
+	margin-top: 3px;
+	margin-left: 35%;
 }
