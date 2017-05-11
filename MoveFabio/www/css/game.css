@@ -1,8 +1,10 @@
 body{
-	margin: 0px;
+	margin: 0 auto;
 	background-color: #004f64;
 }
-#phaser{
-	margin-top: 3px;
-	margin-left: 35%;
+#content{
+	margin: -315px 0 0 -205px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
 }
