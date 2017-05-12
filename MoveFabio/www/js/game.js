@@ -297,7 +297,7 @@ var app = {
         game.state.add('room3', room3State);
         game.state.add('room2', room2State);
         game.state.add('menu', menu);
-        game.state.start('room2');
+        game.state.start('room3');
     },
 
 };
