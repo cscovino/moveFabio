@@ -26,7 +26,130 @@ var app = {
             },
 
             actionOnClick: function(){
-                game.state.start('room3');
+                game.state.start('hall');
+            },
+        };
+
+        var hallState = {
+            preload: function(){
+                game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('r1','assets/backgrounds/sala1sprite.png',90,90);
+                game.load.spritesheet('r2','assets/backgrounds/sala2sprite.png',90,90);
+                game.load.spritesheet('r3','assets/backgrounds/sala3sprite.png',90,90);
+                game.load.image('backgnd','assets/backgrounds/pasillo.png');
+                game.load.image('lights','assets/backgrounds/luzpasillo.png');
+            },
+
+            create: function(){
+                game.stage.backgroundColor = '#182d3b';
+                game.add.sprite(0,0,'backgnd');
+
+                leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+                rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+                upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+                downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+                spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+                r1 = game.add.sprite(315,55,'r1');
+                r1.animations.add('spawn');
+                r1.animations.play('spawn',5,true);
+
+                r2 = game.add.sprite(315,255,'r2');
+                r2.animations.add('spawn');
+                r2.animations.play('spawn',5,true);
+
+                r3 = game.add.sprite(315,455,'r3');
+                r3.animations.add('spawn');
+                r3.animations.play('spawn',5,true);
+
+                player = game.add.sprite(0,0,'fabio',4);
+                player.animations.add('down',[0,1,2,3],10,true);
+                player.animations.add('up',[4,5,6,7],10,true);
+                player.animations.add('right',[8,9,10,11],10,true);
+                player.animations.add('left',[12,13,14,15],10,true);
+                game.physics.arcade.enable(player);
+                player.body.collideWorldBounds = true;
+
+                game.add.sprite(0,0,'lights');
+
+                //select = game.add.sprite(200,200,'select');
+                //select.animations.add('spawn');
+                //select.animations.play('spawn',5,true);
+                //select.inputEnabled = true;
+                //select.events.onInputDown.add(path,this);
+
+                //cursors = game.input.keyboard.createCursorKeys();
+            },
+
+            update: function(){
+                player.body.velocity.x = 0;
+                player.body.velocity.y = 0;
+
+                if (leftKey.isDown) {
+                    player.body.velocity.x = -190;
+
+                    player.animations.play('left');
+                }
+                else if (rightKey.isDown) {
+                    player.body.velocity.x = 190;
+
+                    player.animations.play('right');
+                }
+                else if (upKey.isDown) {
+                    player.body.velocity.y = -190;
+
+                    player.animations.play('up');
+                }
+                else if (downKey.isDown) {
+                    player.body.velocity.y = 190;
+
+                    player.animations.play('down');
+                }
+                else if(spaceKey.isDown){
+                    roomSelect = hallState.checkOverlap();
+                    switch(roomSelect){
+                        case 1:
+                            game.state.start('room1');
+                            break;
+                        case 2:
+                            game.state.start('room2');
+                            break;
+                        case 3:
+                            game.state.start('room3');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else{
+                    player.animations.stop();
+                    player.frame = 0;
+                }
+
+                var hitDesks = game.physics.arcade.collide(player, desks);
+            },
+
+            render: function(){
+                //game.debug.geom(rect, '#0fffff');
+            },
+
+            checkOverlap: function(){
+                var boundsA = player.getBounds();
+                var boundsB = r1.getBounds();
+                var boundsC = r2.getBounds();
+                var boundsD = r3.getBounds();
+
+                if (Phaser.Rectangle.intersects(boundsA,boundsB)) {
+                    return 1;
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsC)) {
+                    return 2;
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsD)) {
+                    return 3;
+                }
+
+                return 0
             },
         };
 
@@ -103,7 +226,7 @@ var app = {
                 var dronel = desks.create(game.world.width - 120, game.world.height - 153, 'ronel');
                 dronel.body.immovable = true;
 
-                player = game.add.sprite(0,0,'fabio',4);
+                player = game.add.sprite(game.world.width/2 - 20,game.world.height,'fabio',4);
                 player.animations.add('down',[0,1,2,3],10,true);
                 player.animations.add('up',[4,5,6,7],10,true);
                 player.animations.add('right',[8,9,10,11],10,true);
@@ -240,7 +363,7 @@ var app = {
                 var dluisa = desks.create(game.world.width - 120, game.world.height - 181, 'luisa');
                 dluisa.body.immovable = true;
 
-                player = game.add.sprite(0,0,'fabio',4);
+                player = game.add.sprite(game.world.width/2 - 20,game.world.height,'fabio',4);
                 player.animations.add('down',[0,1,2,3],10,true);
                 player.animations.add('up',[4,5,6,7],10,true);
                 player.animations.add('right',[8,9,10,11],10,true);
@@ -296,8 +419,9 @@ var app = {
 
         game.state.add('room3', room3State);
         game.state.add('room2', room2State);
+        game.state.add('hall', hallState);
         game.state.add('menu', menu);
-        game.state.start('room3');
+        game.state.start('menu');
     },
 
 };
