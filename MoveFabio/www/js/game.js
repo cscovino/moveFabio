@@ -156,6 +156,7 @@ var app = {
         var room3State = {
             preload: function(){
                 game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
                 game.load.image('backgnd','assets/backgrounds/salon3.png');
                 game.load.image('chairfront', 'assets/silla.png');
                 game.load.image('chairback', 'assets/silla2.png');
@@ -226,6 +227,10 @@ var app = {
                 var dronel = desks.create(game.world.width - 120, game.world.height - 153, 'ronel');
                 dronel.body.immovable = true;
 
+                back = game.add.sprite(game.world.width/2 - 20,game.world.height - 55,'back');
+                back.animations.add('spawn');
+                back.animations.play('spawn',5,true);
+
                 player = game.add.sprite(game.world.width/2 - 20,game.world.height,'fabio',4);
                 player.animations.add('down',[0,1,2,3],10,true);
                 player.animations.add('up',[4,5,6,7],10,true);
@@ -267,8 +272,8 @@ var app = {
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown && checkOverlap()){
-                    console.log('action');
+                else if(spaceKey.isDown && room3State.checkOverlap()){
+                    game.state.start('hall');
                 }
                 else{
                     player.animations.stop();
@@ -278,13 +283,9 @@ var app = {
                 var hitDesks = game.physics.arcade.collide(player, desks);
             },
 
-            render: function(){
-                //game.debug.geom(rect, '#0fffff');
-            },
-
             checkOverlap: function(){
                 var boundsA = player.getBounds();
-                var boundsB = cfab.getBounds();
+                var boundsB = back.getBounds();
 
                 return Phaser.Rectangle.intersects(boundsA,boundsB);
             },
@@ -293,6 +294,7 @@ var app = {
         var room2State = {
             preload: function(){
                 game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
                 game.load.image('backgnd','assets/backgrounds/salon2.png');
                 game.load.image('chairfront', 'assets/silla.png');
                 game.load.image('chairback', 'assets/silla2.png');
@@ -363,6 +365,10 @@ var app = {
                 var dluisa = desks.create(game.world.width - 120, game.world.height - 181, 'luisa');
                 dluisa.body.immovable = true;
 
+                back = game.add.sprite(game.world.width/2 - 20,game.world.height - 55,'back');
+                back.animations.add('spawn');
+                back.animations.play('spawn',5,true);
+
                 player = game.add.sprite(game.world.width/2 - 20,game.world.height,'fabio',4);
                 player.animations.add('down',[0,1,2,3],10,true);
                 player.animations.add('up',[4,5,6,7],10,true);
@@ -396,8 +402,8 @@ var app = {
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown && checkOverlap()){
-                    console.log('action');
+                else if(spaceKey.isDown && room2State.checkOverlap()){
+                    game.state.start('hall');
                 }
                 else{
                     player.animations.stop();
@@ -409,7 +415,7 @@ var app = {
 
             checkOverlap: function(){
                 var boundsA = player.getBounds();
-                var boundsB = cfab.getBounds();
+                var boundsB = back.getBounds();
 
                 return Phaser.Rectangle.intersects(boundsA,boundsB);
             },
