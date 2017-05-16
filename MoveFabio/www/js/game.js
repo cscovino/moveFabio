@@ -2,13 +2,40 @@ var app = {
 
     iniciaJuego: function(){
 
-        var alto = document.documentElement.clientHeight;
-        var ancho1 = document.documentElement.clientWidth/2; 
-        var ancho = document.documentElement.clientWidth;
         var desks, chairs;
         var button;
-        var select;
+        var cfab,cysa,csmart,cmafe,cey,cifig,csco,cronel;
+        var ccarlos,ccdan,cjami,cmarie,cernesto,coscar,cnacho,cluisa;
         var leftKey, rightKey, upKey, downKey, spaceKey;
+        var value = Math.floor((Math.random()*25)+1);
+        console.log(value);
+        var pos = {
+            'cfab': 1,
+            'cysa': 2,
+            'csmart': 3,
+            'cmafe': 4,
+            'cey': 5,
+            'cifig': 6,
+            'csco': 7,
+            'cronel': 8,
+            'ccarlos': 9,
+            'ccdan': 10,
+            'cjami': 11,
+            'cmarie': 12,
+            'cernesto': 13,
+            'coscar': 14,
+            'cnacho': 15,
+            'cluisa': 16,
+            'cgian': 17,
+            'cwil': 18,
+            'clis': 19,
+            'cmai': 20,
+            'cmari': 21,
+            'cjes': 22,
+            'cmarj': 23,
+            'cram': 24,
+            'cnat': 25
+        };
 
         var menu = {
             preload: function(){
@@ -71,14 +98,6 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 game.add.sprite(0,0,'lights');
-
-                //select = game.add.sprite(200,200,'select');
-                //select.animations.add('spawn');
-                //select.animations.play('spawn',5,true);
-                //select.inputEnabled = true;
-                //select.events.onInputDown.add(path,this);
-
-                //cursors = game.input.keyboard.createCursorKeys();
             },
 
             update: function(){
@@ -127,10 +146,6 @@ var app = {
                 }
 
                 var hitDesks = game.physics.arcade.collide(player, desks);
-            },
-
-            render: function(){
-                //game.debug.geom(rect, '#0fffff');
             },
 
             checkOverlap: function(){
@@ -192,37 +207,37 @@ var app = {
                 var dfab = desks.create(0, game.world.height/6 - 2, 'fab');
                 dfab.body.immovable = true;
 
-                var csmart = chairs.create(30, game.world.height/6 + 91, 'chairback');
+                csmart = chairs.create(30, game.world.height/6 + 91, 'chairback');
                 csmart.body.immovable = true;
                 var dsmart = desks.create(0, game.world.height/6 + 52, 'smart');
                 dsmart.body.immovable = true;
 
-                var cey = chairs.create(30, game.world.height - 276, 'chairback');
+                cey = chairs.create(30, game.world.height - 276, 'chairback');
                 cey.body.immovable = true;
                 var dey = desks.create(0, game.world.height - 315, 'eylin');
                 dey.body.immovable = true;
 
-                var csco = chairs.create(30, game.world.height - 115, 'chairback');
+                csco = chairs.create(30, game.world.height - 115, 'chairback');
                 csco.body.immovable = true;
                 var dsco = desks.create(0, game.world.height - 153, 'sco');
                 dsco.body.immovable = true;
 
-                var cysa = chairs.create(game.world.width - 89, game.world.height/6 - 22, 'chairfront');
+                cysa = chairs.create(game.world.width - 89, game.world.height/6 - 22, 'chairfront');
                 cysa.body.immovable = true;
                 var dysa = desks.create(game.world.width - 120, game.world.height/6 - 2, 'ysa');
                 dysa.body.immovable = true;
 
-                var cmafe = chairs.create(game.world.width - 89, game.world.height/6 + 91, 'chairback');
+                cmafe = chairs.create(game.world.width - 89, game.world.height/6 + 91, 'chairback');
                 cmafe.body.immovable = true;
                 var dmafe = desks.create(game.world.width - 120, game.world.height/6 + 52, 'mafe');
                 dmafe.body.immovable = true;
 
-                var cifig = chairs.create(game.world.width - 89, game.world.height - 276, 'chairback');
+                cifig = chairs.create(game.world.width - 89, game.world.height - 276, 'chairback');
                 cifig.body.immovable = true;
                 var difig = desks.create(game.world.width - 120, game.world.height - 315, 'ifig');
                 difig.body.immovable = true;
 
-                var cronel = chairs.create(game.world.width - 89, game.world.height - 115, 'chairback');
+                cronel = chairs.create(game.world.width - 89, game.world.height - 115, 'chairback');
                 cronel.body.immovable = true;
                 var dronel = desks.create(game.world.width - 120, game.world.height - 153, 'ronel');
                 dronel.body.immovable = true;
@@ -238,14 +253,6 @@ var app = {
                 player.animations.add('left',[12,13,14,15],10,true);
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
-
-                //select = game.add.sprite(200,200,'select');
-                //select.animations.add('spawn');
-                //select.animations.play('spawn',5,true);
-                //select.inputEnabled = true;
-                //select.events.onInputDown.add(path,this);
-
-                //cursors = game.input.keyboard.createCursorKeys();
             },
 
             update: function(){
@@ -272,8 +279,14 @@ var app = {
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown && room3State.checkOverlap()){
-                    game.state.start('hall');
+                else if(spaceKey.isDown){
+                    var aux = room3State.checkOverlap();
+                    if (aux === value) {
+                        console.log('WIN!');
+                    }
+                    else if (aux === 30) {
+                        game.state.start('hall');
+                    }
                 }
                 else{
                     player.animations.stop();
@@ -286,8 +299,44 @@ var app = {
             checkOverlap: function(){
                 var boundsA = player.getBounds();
                 var boundsB = back.getBounds();
+                var boundsC = cfab.getBounds();
+                var boundsD = cysa.getBounds();
+                var boundsE = csmart.getBounds();
+                var boundsF = cmafe.getBounds();
+                var boundsG = cey.getBounds();
+                var boundsH = cifig.getBounds();
+                var boundsI = csco.getBounds();
+                var boundsJ = cronel.getBounds();
 
-                return Phaser.Rectangle.intersects(boundsA,boundsB);
+                if (Phaser.Rectangle.intersects(boundsA,boundsB)) {
+                    return 30;
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsC)) {
+                    return pos['cfab'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsD)) {
+                    return pos['cysa'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsE)) {
+                    return pos['csmart'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsF)) {
+                    return pos['cmafe'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsG)) {
+                    return pos['cey'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsH)) {
+                    return pos['cifig'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsI)) {
+                    return pos['csco'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
+                    return pos['cronel']
+                }
+
+                return 0;
             },
         };
 
@@ -330,37 +379,37 @@ var app = {
                 var dcarlos = desks.create(0, game.world.height/6 + 16, 'carlos');
                 dcarlos.body.immovable = true;
 
-                var cjami = chairs.create(30, game.world.height/6 + 109, 'chairback');
+                cjami = chairs.create(30, game.world.height/6 + 109, 'chairback');
                 cjami.body.immovable = true;
                 var djami = desks.create(0, game.world.height/6 + 70, 'jami');
                 djami.body.immovable = true;
 
-                var cernesto = chairs.create(30, game.world.height - 256, 'chairfront');
+                cernesto = chairs.create(30, game.world.height - 256, 'chairfront');
                 cernesto.body.immovable = true;
                 var dernesto = desks.create(0, game.world.height - 235, 'ernesto');
                 dernesto.body.immovable = true;
 
-                var cnacho = chairs.create(30, game.world.height - 142, 'chairback');
+                cnacho = chairs.create(30, game.world.height - 142, 'chairback');
                 cnacho.body.immovable = true;
                 var dnacho = desks.create(0, game.world.height - 181, 'nacho');
                 dnacho.body.immovable = true;
 
-                var ccdan = chairs.create(game.world.width - 89, game.world.height/6 - 4, 'chairfront');
+                ccdan = chairs.create(game.world.width - 89, game.world.height/6 - 4, 'chairfront');
                 ccdan.body.immovable = true;
                 var dcdan = desks.create(game.world.width - 120, game.world.height/6 + 16, 'cdan');
                 dcdan.body.immovable = true;
 
-                var cmarie = chairs.create(game.world.width - 89, game.world.height/6 + 109, 'chairback');
+                cmarie = chairs.create(game.world.width - 89, game.world.height/6 + 109, 'chairback');
                 cmarie.body.immovable = true;
                 var dmarie = desks.create(game.world.width - 120, game.world.height/6 + 70, 'marie');
                 dmarie.body.immovable = true;
 
-                var coscar = chairs.create(game.world.width - 89, game.world.height - 256, 'chairfront');
+                coscar = chairs.create(game.world.width - 89, game.world.height - 256, 'chairfront');
                 coscar.body.immovable = true;
                 var doscar = desks.create(game.world.width - 120, game.world.height - 235, 'oscar');
                 doscar.body.immovable = true;
 
-                var cluisa = chairs.create(game.world.width - 89, game.world.height - 142, 'chairback');
+                cluisa = chairs.create(game.world.width - 89, game.world.height - 142, 'chairback');
                 cluisa.body.immovable = true;
                 var dluisa = desks.create(game.world.width - 120, game.world.height - 181, 'luisa');
                 dluisa.body.immovable = true;
@@ -402,8 +451,14 @@ var app = {
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown && room2State.checkOverlap()){
-                    game.state.start('hall');
+                else if(spaceKey.isDown){
+                    var aux = room2State.checkOverlap();
+                    if (aux === value) {
+                        console.log('WIN!')
+                    }
+                    else if (aux === 30) {
+                        game.state.start('hall');
+                    }
                 }
                 else{
                     player.animations.stop();
@@ -416,8 +471,44 @@ var app = {
             checkOverlap: function(){
                 var boundsA = player.getBounds();
                 var boundsB = back.getBounds();
+                var boundsC = ccarlos.getBounds();
+                var boundsD = ccdan.getBounds();
+                var boundsE = cjami.getBounds();
+                var boundsF = cmarie.getBounds();
+                var boundsG = cernesto.getBounds();
+                var boundsH = coscar.getBounds();
+                var boundsI = cnacho.getBounds();
+                var boundsJ = cluisa.getBounds();
 
-                return Phaser.Rectangle.intersects(boundsA,boundsB);
+                if (Phaser.Rectangle.intersects(boundsA,boundsB)) {
+                    return 30;
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsC)) {
+                    return pos['ccarlos'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsD)) {
+                    return pos['ccdan'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsE)) {
+                    return pos['cjami'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsF)) {
+                    return pos['cmarie'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsG)) {
+                    return pos['cernesto'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsH)) {
+                    return pos['coscar'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsI)) {
+                    return pos['cnacho'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
+                    return pos['cluisa']
+                }
+
+                return 0;
             },
         };
             
