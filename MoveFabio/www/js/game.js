@@ -3,6 +3,8 @@ var app = {
     iniciaJuego: function(){
 
         var desks, chairs;
+        var prevaux = -1;
+        var puntuacion = 100;
         var button;
         var cfab,cysa,csmart,cmafe,cey,cifig,csco,cronel;
         var ccarlos,ccdan,cjami,cmarie,cernesto,coscar,cnacho,cluisa;
@@ -98,6 +100,7 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 game.add.sprite(0,0,'lights');
+                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -253,6 +256,8 @@ var app = {
                 player.animations.add('left',[12,13,14,15],10,true);
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
+
+                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -287,6 +292,11 @@ var app = {
                     else if (aux === 30) {
                         game.state.start('hall');
                     }
+                    else if (aux > 0 && aux !== prevaux) {
+                        puntuacion -= 4;
+                        scoreText.text = puntuacion;
+                    }
+                    prevaux = aux;
                 }
                 else{
                     player.animations.stop();
@@ -425,6 +435,8 @@ var app = {
                 player.animations.add('left',[12,13,14,15],10,true);
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
+
+                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -459,6 +471,11 @@ var app = {
                     else if (aux === 30) {
                         game.state.start('hall');
                     }
+                    else if (aux > 0 && aux !== prevaux) {
+                        puntuacion -= 4;
+                        scoreText.text = puntuacion;
+                    }
+                    prevaux = aux;
                 }
                 else{
                     player.animations.stop();
