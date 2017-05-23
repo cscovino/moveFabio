@@ -8,6 +8,7 @@ var app = {
         var button;
         var cfab,cysa,csmart,cmafe,cey,cifig,csco,cronel;
         var ccarlos,ccdan,cjami,cmarie,cernesto,coscar,cnacho,cluisa;
+        var cgian,cjessa,clis,cmairim,cmari,cmjordan,cnathy,cramon,cwil;
         var leftKey, rightKey, upKey, downKey, spaceKey;
         var value = Math.floor((Math.random()*25)+1);
         console.log(value);
@@ -31,12 +32,12 @@ var app = {
             'cgian': 17,
             'cwil': 18,
             'clis': 19,
-            'cmai': 20,
+            'cmairim': 20,
             'cmari': 21,
-            'cjes': 22,
-            'cmarj': 23,
-            'cram': 24,
-            'cnat': 25
+            'cjessa': 22,
+            'cmjordan': 23,
+            'cramon': 24,
+            'cnathy': 25
         };
 
         var menu = {
@@ -48,7 +49,7 @@ var app = {
             create: function(){
                 game.stage.backgroundColor = '#182d3b';
 
-                button = game.add.button(10,10,'button',menu.actionOnClick,this,1,0,1,0);
+                button = game.add.button(100,300,'button',menu.actionOnClick,this,1,0,1,0);
             },
 
             update: function(){
@@ -100,7 +101,7 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 game.add.sprite(0,0,'lights');
-                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
+                scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -257,7 +258,7 @@ var app = {
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
 
-                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
+                scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -294,7 +295,7 @@ var app = {
                     }
                     else if (aux > 0 && aux !== prevaux) {
                         puntuacion -= 4;
-                        scoreText.text = puntuacion;
+                        scoreText.text = 'Score: '+puntuacion;
                     }
                     prevaux = aux;
                 }
@@ -436,7 +437,7 @@ var app = {
                 game.physics.arcade.enable(player);
                 player.body.collideWorldBounds = true;
 
-                scoreText = game.add.text(16,600, puntuacion, {fontSize:'20px', fill:'#000000'});
+                scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
             },
 
             update: function(){
@@ -473,7 +474,7 @@ var app = {
                     }
                     else if (aux > 0 && aux !== prevaux) {
                         puntuacion -= 4;
-                        scoreText.text = puntuacion;
+                        scoreText.text = 'Score: '+puntuacion;
                     }
                     prevaux = aux;
                 }
@@ -528,11 +529,200 @@ var app = {
                 return 0;
             },
         };
+
+        var room1State = {
+            preload: function(){
+                game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
+                game.load.image('backgnd','assets/backgrounds/salon1.png');
+                game.load.image('chairfront', 'assets/silla.png');
+                game.load.image('chairback', 'assets/silla2.png');
+
+                game.load.image('gian','assets/room1/gian.png');
+                game.load.image('jessa','assets/room1/jessa.png');
+                game.load.image('lis','assets/room1/lis.png');
+                game.load.image('mairim','assets/room1/mairim.png');
+                game.load.image('mari','assets/room1/mari.png');
+                game.load.image('mjordan','assets/room1/mjordan.png');
+                game.load.image('nathy','assets/room1/nathy.png');
+                game.load.image('ramon','assets/room1/ramon.png');
+                game.load.image('wil','assets/room1/wil.png');
+            },
+
+            create: function(){
+                game.stage.backgroundColor = '#182d3b';
+                game.add.sprite(0,0,'backgnd');
+
+                leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+                rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+                upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+                downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+                spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+                chairs = game.add.group();
+                chairs.enableBody = true;
+
+                desks = game.add.group();
+                desks.enableBody = true;
+
+                cgian = chairs.create(30, game.world.height/6 + 6, 'chairfront');
+                cgian.body.immovable = true;
+                var dgian = desks.create(0, game.world.height/6 + 26, 'gian');
+                dgian.body.immovable = true;
+
+                cwil = chairs.create(180, game.world.height/6 - 85, 'chairfront');
+                cwil.body.immovable = true;
+                var dwil = game.add.sprite(150, game.world.height/6 - 65, 'wil');
+
+                cmairim = chairs.create(30, game.world.height/6 + 119, 'chairback');
+                cmairim.body.immovable = true;
+                var dmairim = desks.create(0, game.world.height/6 + 80, 'mairim');
+                dmairim.body.immovable = true;
+
+                cjessa = chairs.create(30, game.world.height - 246, 'chairfront');
+                cjessa.body.immovable = true;
+                var djessa = desks.create(0, game.world.height - 225, 'jessa');
+                djessa.body.immovable = true;
+
+                cramon = chairs.create(30, game.world.height - 132, 'chairback');
+                cramon.body.immovable = true;
+                var dramon = desks.create(0, game.world.height - 171, 'ramon');
+                dramon.body.immovable = true;
+
+                clis = chairs.create(game.world.width - 89, game.world.height/6 + 6, 'chairfront');
+                clis.body.immovable = true;
+                var dlis = desks.create(game.world.width - 120, game.world.height/6 + 26, 'lis');
+                dlis.body.immovable = true;
+
+                cmari = chairs.create(game.world.width - 89, game.world.height/6 + 119, 'chairback');
+                cmari.body.immovable = true;
+                var dmari = desks.create(game.world.width - 120, game.world.height/6 + 80, 'mari');
+                dmari.body.immovable = true;
+
+                cmjordan = chairs.create(game.world.width - 89, game.world.height - 246, 'chairfront');
+                cmjordan.body.immovable = true;
+                var dmjordan = desks.create(game.world.width - 120, game.world.height - 225, 'mjordan');
+                dmjordan.body.immovable = true;
+
+                cnathy = chairs.create(game.world.width - 89, game.world.height - 132, 'chairback');
+                cnathy.body.immovable = true;
+                var dnathy = desks.create(game.world.width - 120, game.world.height - 171, 'nathy');
+                dnathy.body.immovable = true;
+
+                back = game.add.sprite(game.world.width/2 - 20,game.world.height - 55,'back');
+                back.animations.add('spawn');
+                back.animations.play('spawn',5,true);
+
+                player = game.add.sprite(game.world.width/2 - 20,game.world.height,'fabio',4);
+                player.animations.add('down',[0,1,2,3],10,true);
+                player.animations.add('up',[4,5,6,7],10,true);
+                player.animations.add('right',[8,9,10,11],10,true);
+                player.animations.add('left',[12,13,14,15],10,true);
+                game.physics.arcade.enable(player);
+                player.body.collideWorldBounds = true;
+
+                scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
+            },
+
+            update: function(){
+                player.body.velocity.x = 0;
+                player.body.velocity.y = 0;
+
+                if (leftKey.isDown) {
+                    player.body.velocity.x = -190;
+
+                    player.animations.play('left');
+                }
+                else if (rightKey.isDown) {
+                    player.body.velocity.x = 190;
+
+                    player.animations.play('right');
+                }
+                else if (upKey.isDown) {
+                    player.body.velocity.y = -190;
+
+                    player.animations.play('up');
+                }
+                else if (downKey.isDown) {
+                    player.body.velocity.y = 190;
+
+                    player.animations.play('down');
+                }
+                else if(spaceKey.isDown){
+                    var aux = room1State.checkOverlap();
+                    if (aux === value) {
+                        console.log('WIN!')
+                    }
+                    else if (aux === 30) {
+                        game.state.start('hall');
+                    }
+                    else if (aux > 0 && aux !== prevaux) {
+                        puntuacion -= 4;
+                        scoreText.text = 'Score: '+puntuacion;
+                    }
+                    prevaux = aux;
+                }
+                else{
+                    player.animations.stop();
+                    player.frame = 0;
+                }
+
+                var hitDesks = game.physics.arcade.collide(player, desks);
+            },
+
+            checkOverlap: function(){
+                var boundsA = player.getBounds();
+                var boundsB = back.getBounds();
+                var boundsC = cgian.getBounds();
+                var boundsD = clis.getBounds();
+                var boundsE = cmairim.getBounds();
+                var boundsF = cmari.getBounds();
+                var boundsG = cjessa.getBounds();
+                var boundsH = cmjordan.getBounds();
+                var boundsI = cramon.getBounds();
+                var boundsJ = cnathy.getBounds();
+                var boundsK = cwil.getBounds();
+
+                if (Phaser.Rectangle.intersects(boundsA,boundsB)) {
+                    return 30;
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsC)) {
+                    return pos['cgian'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsD)) {
+                    return pos['clis'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsE)) {
+                    return pos['cmairim'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsF)) {
+                    return pos['cmari'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsG)) {
+                    return pos['cjessa'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsH)) {
+                    return pos['cmjordan'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsI)) {
+                    return pos['cramon'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
+                    return pos['cnathy'];
+                }
+                else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
+                    return pos['cwil'];
+                }
+
+                return 0;
+            },
+        };
             
         var game = new Phaser.Game(410, 630, Phaser.AUTO, 'phaser');
 
         game.state.add('room3', room3State);
         game.state.add('room2', room2State);
+        game.state.add('room1', room1State);
         game.state.add('hall', hallState);
         game.state.add('menu', menu);
         game.state.start('menu');
