@@ -4,6 +4,7 @@ var app = {
 
         var desks, chairs;
         var prevaux = -1;
+        var move = true;
         var puntuacion = 100;
         var button;
         var cfab,cysa,csmart,cmafe,cey,cifig,csco,cronel;
@@ -42,14 +43,16 @@ var app = {
 
         var menu = {
             preload: function(){
-                game.load.spritesheet('button','assets/butsprite.png',200,52);
+                game.load.spritesheet('button','assets/butsprite1.png',200,52);
+                game.load.image('inicio','assets/inicio.png');
                 
             },
 
             create: function(){
                 game.stage.backgroundColor = '#182d3b';
 
-                button = game.add.button(100,300,'button',menu.actionOnClick,this,1,0,1,0);
+                button = game.add.button(100,280,'button',menu.actionOnClick,this,1,0,1,0);
+                game.add.sprite(105,110,'inicio');
             },
 
             update: function(){
@@ -175,6 +178,8 @@ var app = {
         var room3State = {
             preload: function(){
                 game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('fabiolose','assets/crysprite.png',75,96);
+                game.load.spritesheet('fabiowin','assets/celebsprite.png',60,96);
                 game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
                 game.load.image('backgnd','assets/backgrounds/salon3.png');
                 game.load.image('chairfront', 'assets/silla.png');
@@ -265,30 +270,37 @@ var app = {
                 player.body.velocity.x = 0;
                 player.body.velocity.y = 0;
 
-                if (leftKey.isDown) {
+                if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
 
                     player.animations.play('left');
                 }
-                else if (rightKey.isDown) {
+                else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
 
                     player.animations.play('right');
                 }
-                else if (upKey.isDown) {
+                else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
 
                     player.animations.play('up');
                 }
-                else if (downKey.isDown) {
+                else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown){
+                else if(spaceKey.isDown && move){
                     var aux = room3State.checkOverlap();
                     if (aux === value) {
                         console.log('WIN!');
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        celeb = game.add.sprite(playerx-5,playery,'fabiowin');
+                        anim = celeb.animations.add('win');
+                        celeb.animations.play('win',8,false);
+                        move = false;
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -296,6 +308,14 @@ var app = {
                     else if (aux > 0 && aux !== prevaux) {
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        crying = game.add.sprite(playerx-10,playery,'fabiolose');
+                        anim = crying.animations.add('loose');
+                        crying.animations.play('loose',8,false,true);
+                        move = false;
+                        anim.onComplete.add(room3State.createPlayer, this);
                     }
                     prevaux = aux;
                 }
@@ -349,11 +369,24 @@ var app = {
 
                 return 0;
             },
+
+            createPlayer: function(){
+                player = game.add.sprite(playerx,playery,'fabio',4);
+                player.animations.add('down',[0,1,2,3],10,true);
+                player.animations.add('up',[4,5,6,7],10,true);
+                player.animations.add('right',[8,9,10,11],10,true);
+                player.animations.add('left',[12,13,14,15],10,true);
+                game.physics.arcade.enable(player);
+                player.body.collideWorldBounds = true;
+                move = true;
+            },
         };
 
         var room2State = {
             preload: function(){
                 game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('fabiolose','assets/crysprite.png',75,96);
+                game.load.spritesheet('fabiowin','assets/celebsprite.png',60,96);
                 game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
                 game.load.image('backgnd','assets/backgrounds/salon2.png');
                 game.load.image('chairfront', 'assets/silla.png');
@@ -444,30 +477,37 @@ var app = {
                 player.body.velocity.x = 0;
                 player.body.velocity.y = 0;
 
-                if (leftKey.isDown) {
+                if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
 
                     player.animations.play('left');
                 }
-                else if (rightKey.isDown) {
+                else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
 
                     player.animations.play('right');
                 }
-                else if (upKey.isDown) {
+                else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
 
                     player.animations.play('up');
                 }
-                else if (downKey.isDown) {
+                else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown){
+                else if(spaceKey.isDown && move){
                     var aux = room2State.checkOverlap();
                     if (aux === value) {
-                        console.log('WIN!')
+                        console.log('WIN!');
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        celeb = game.add.sprite(playerx-5,playery,'fabiowin');
+                        anim = celeb.animations.add('win');
+                        celeb.animations.play('win',8,false);
+                        move = false;
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -475,6 +515,14 @@ var app = {
                     else if (aux > 0 && aux !== prevaux) {
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        crying = game.add.sprite(playerx-10,playery,'fabiolose');
+                        anim = crying.animations.add('loose');
+                        crying.animations.play('loose',8,false,true);
+                        move = false;
+                        anim.onComplete.add(room2State.createPlayer, this);
                     }
                     prevaux = aux;
                 }
@@ -528,11 +576,24 @@ var app = {
 
                 return 0;
             },
+
+            createPlayer: function(){
+                player = game.add.sprite(playerx,playery,'fabio',4);
+                player.animations.add('down',[0,1,2,3],10,true);
+                player.animations.add('up',[4,5,6,7],10,true);
+                player.animations.add('right',[8,9,10,11],10,true);
+                player.animations.add('left',[12,13,14,15],10,true);
+                game.physics.arcade.enable(player);
+                player.body.collideWorldBounds = true;
+                move = true;
+            },
         };
 
         var room1State = {
             preload: function(){
                 game.load.spritesheet('fabio','assets/spritesheet.png',55,96);
+                game.load.spritesheet('fabiolose','assets/crysprite.png',75,96);
+                game.load.spritesheet('fabiowin','assets/celebsprite.png',60,96);
                 game.load.spritesheet('back','assets/backgrounds/passprite.png',45,45);
                 game.load.image('backgnd','assets/backgrounds/salon1.png');
                 game.load.image('chairfront', 'assets/silla.png');
@@ -628,30 +689,37 @@ var app = {
                 player.body.velocity.x = 0;
                 player.body.velocity.y = 0;
 
-                if (leftKey.isDown) {
+                if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
 
                     player.animations.play('left');
                 }
-                else if (rightKey.isDown) {
+                else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
 
                     player.animations.play('right');
                 }
-                else if (upKey.isDown) {
+                else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
 
                     player.animations.play('up');
                 }
-                else if (downKey.isDown) {
+                else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
 
                     player.animations.play('down');
                 }
-                else if(spaceKey.isDown){
+                else if(spaceKey.isDown && move){
                     var aux = room1State.checkOverlap();
                     if (aux === value) {
-                        console.log('WIN!')
+                        console.log('WIN!');
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        celeb = game.add.sprite(playerx-5,playery,'fabiowin');
+                        anim = celeb.animations.add('win');
+                        celeb.animations.play('win',8,false);
+                        move = false;
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -659,6 +727,14 @@ var app = {
                     else if (aux > 0 && aux !== prevaux) {
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
+                        playerx = player.getBounds().x;
+                        playery = player.getBounds().y;
+                        player.kill();
+                        crying = game.add.sprite(playerx-10,playery,'fabiolose');
+                        anim = crying.animations.add('loose');
+                        crying.animations.play('loose',8,false,true);
+                        move = false;
+                        anim.onComplete.add(room1State.createPlayer, this);
                     }
                     prevaux = aux;
                 }
@@ -710,11 +786,22 @@ var app = {
                 else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
                     return pos['cnathy'];
                 }
-                else if (Phaser.Rectangle.intersects(boundsA,boundsJ)) {
+                else if (Phaser.Rectangle.intersects(boundsA,boundsK)) {
                     return pos['cwil'];
                 }
 
                 return 0;
+            },
+
+            createPlayer: function(){
+                player = game.add.sprite(playerx,playery,'fabio',4);
+                player.animations.add('down',[0,1,2,3],10,true);
+                player.animations.add('up',[4,5,6,7],10,true);
+                player.animations.add('right',[8,9,10,11],10,true);
+                player.animations.add('left',[12,13,14,15],10,true);
+                game.physics.arcade.enable(player);
+                player.body.collideWorldBounds = true;
+                move = true;
             },
         };
             
