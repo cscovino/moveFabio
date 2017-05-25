@@ -1,10 +1,31 @@
 var app = {
 
+    score: '',
+
+    gameOver: function(){
+        sound.stop();
+        $('#myModal').modal('show');
+        document.getElementById('scoreF').innerHTML = app.score;
+    },
+
+    initFirebase: function(){
+        var config = {
+            apiKey: "AIzaSyDudsxzfbjNdEU7xLueKhgGtVgeaUoIx2Y",
+            authDomain: "movefabio-43d35.firebaseapp.com",
+            databaseURL: "https://movefabio-43d35.firebaseio.com",
+            projectId: "movefabio-43d35",
+            storageBucket: "movefabio-43d35.appspot.com",
+            messagingSenderId: "858236318394"
+        };
+        firebase.initializeApp(config);
+    },
+
     iniciaJuego: function(){
 
         var desks, chairs;
         var prevaux = -1;
         var move = true;
+        var start = false;
         var puntuacion = 100;
         var button;
         var cfab,cysa,csmart,cmafe,cey,cifig,csco,cronel;
@@ -46,7 +67,6 @@ var app = {
                 game.load.spritesheet('button','assets/butsprite1.png',200,52);
                 game.load.image('inicio','assets/inicio.png');
                 game.load.audio('start','sounds/sm64_mario_press_start.wav');
-                
             },
 
             create: function(){
@@ -56,7 +76,8 @@ var app = {
                 game.add.sprite(105,110,'inicio');
 
                 music = game.add.audio('start');
-                music.play();
+
+                setTimeout(function(){music.play();},400);
             },
 
             update: function(){
@@ -75,12 +96,22 @@ var app = {
                 game.load.spritesheet('r3','assets/backgrounds/sala3sprite.png',90,90);
                 game.load.image('backgnd','assets/backgrounds/pasillo.png');
                 game.load.image('lights','assets/backgrounds/luzpasillo.png');
+
+                game.load.audio('sound','sounds/overworld-bgm.mp3');
+                game.load.audio('step','sounds/squeaky.wav');
             },
 
             create: function(){
                 game.stage.backgroundColor = '#182d3b';
                 game.add.sprite(0,0,'backgnd');
 
+                if (!start) {
+                    sound = game.add.audio('sound');
+                    sound.loop = true;
+                    sound.play();
+                    start = true;
+                }
+                    
                 leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
                 rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
                 upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -109,6 +140,8 @@ var app = {
 
                 game.add.sprite(0,0,'lights');
                 scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
+                
+                stepp = game.add.audio('step');
             },
 
             update: function(){
@@ -117,21 +150,25 @@ var app = {
 
                 if (leftKey.isDown) {
                     player.body.velocity.x = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('left');
                 }
                 else if (rightKey.isDown) {
                     player.body.velocity.x = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('right');
                 }
                 else if (upKey.isDown) {
                     player.body.velocity.y = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('up');
                 }
                 else if (downKey.isDown) {
                     player.body.velocity.y = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('down');
                 }
@@ -200,6 +237,8 @@ var app = {
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
+                game.load.audio('sound','sounds/mario-club-band.mp3');
+                game.load.audio('step','sounds/squeaky.wav');
             },
 
             create: function(){
@@ -271,6 +310,8 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
+                
+                stepp = game.add.audio('step');
             },
 
             update: function(){
@@ -279,21 +320,25 @@ var app = {
 
                 if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('left');
                 }
                 else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('right');
                 }
                 else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('up');
                 }
                 else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('down');
                 }
@@ -309,6 +354,9 @@ var app = {
                         anim = celeb.animations.add('win');
                         celeb.animations.play('win',8,false);
                         move = false;
+                        app.score = puntuacion;
+                        game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+                        anim.onComplete.add(app.gameOver, this);
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -413,6 +461,8 @@ var app = {
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
+                game.load.audio('sound','sounds/mario-club-band.mp3');
+                game.load.audio('step','sounds/squeaky.wav');
             },
 
             create: function(){
@@ -484,6 +534,8 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
+                
+                stepp = game.add.audio('step');
             },
 
             update: function(){
@@ -492,21 +544,25 @@ var app = {
 
                 if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('left');
                 }
                 else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('right');
                 }
                 else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('up');
                 }
                 else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('down');
                 }
@@ -522,6 +578,9 @@ var app = {
                         anim = celeb.animations.add('win');
                         celeb.animations.play('win',8,false);
                         move = false;
+                        app.score = puntuacion;
+                        game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+                        anim.onComplete.add(app.gameOver, this);
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -627,6 +686,8 @@ var app = {
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
+                game.load.audio('sound','sounds/mario-club-band.mp3');
+                game.load.audio('step','sounds/squeaky.wav');
             },
 
             create: function(){
@@ -702,6 +763,8 @@ var app = {
                 player.body.collideWorldBounds = true;
 
                 scoreText = game.add.text(16,600,'Score: '+puntuacion, {fontSize:'20px', fill:'#000000'});
+                
+                stepp = game.add.audio('step');
             },
 
             update: function(){
@@ -710,21 +773,25 @@ var app = {
 
                 if (leftKey.isDown && move) {
                     player.body.velocity.x = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('left');
                 }
                 else if (rightKey.isDown && move) {
                     player.body.velocity.x = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('right');
                 }
                 else if (upKey.isDown && move) {
                     player.body.velocity.y = -190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('up');
                 }
                 else if (downKey.isDown && move) {
                     player.body.velocity.y = 190;
+                    stepp.play('',0,0.1,false,false);
 
                     player.animations.play('down');
                 }
@@ -740,6 +807,9 @@ var app = {
                         anim = celeb.animations.add('win');
                         celeb.animations.play('win',8,false);
                         move = false;
+                        app.score = puntuacion;
+                        game.input.keyboard.removeKey(Phaser.Keyboard.SPACEBAR);
+                        anim.onComplete.add(app.gameOver, this);
                     }
                     else if (aux === 30) {
                         game.state.start('hall');
@@ -837,10 +907,16 @@ var app = {
         game.state.start('menu');
     },
 
+    saveFirebase: function(){
+        name = document.getElementById('name-client').value;
+        firebase.database().ref().push({name:name,score:app.score});
+    },
+
 };
 
 if ('addEventListener' in document) {
     document.addEventListener('DOMContentLoaded', function(){
         app.iniciaJuego();
+        app.initFirebase();
     }, false);
 }
