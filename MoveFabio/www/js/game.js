@@ -45,6 +45,7 @@ var app = {
             preload: function(){
                 game.load.spritesheet('button','assets/butsprite1.png',200,52);
                 game.load.image('inicio','assets/inicio.png');
+                game.load.audio('start','sounds/sm64_mario_press_start.wav');
                 
             },
 
@@ -53,6 +54,9 @@ var app = {
 
                 button = game.add.button(100,280,'button',menu.actionOnClick,this,1,0,1,0);
                 game.add.sprite(105,110,'inicio');
+
+                music = game.add.audio('start');
+                music.play();
             },
 
             update: function(){
@@ -193,6 +197,9 @@ var app = {
                 game.load.image('smart','assets/room3/smart.png');
                 game.load.image('sco','assets/room3/yo.png');
                 game.load.image('ysa','assets/room3/ysa.png');
+
+                game.load.audio('burned','sounds/sm64_mario_burned.wav');
+                game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
             },
 
             create: function(){
@@ -293,7 +300,8 @@ var app = {
                 else if(spaceKey.isDown && move){
                     var aux = room3State.checkOverlap();
                     if (aux === value) {
-                        console.log('WIN!');
+                        music2 = game.add.audio('yahoo');
+                        music2.play();
                         playerx = player.getBounds().x;
                         playery = player.getBounds().y;
                         player.kill();
@@ -306,6 +314,8 @@ var app = {
                         game.state.start('hall');
                     }
                     else if (aux > 0 && aux !== prevaux) {
+                        music = game.add.audio('burned');
+                        music.play();
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
                         playerx = player.getBounds().x;
@@ -400,6 +410,9 @@ var app = {
                 game.load.image('marie','assets/room2/marie.png');
                 game.load.image('nacho','assets/room2/nacho.png');
                 game.load.image('oscar','assets/room2/oscar.png');
+
+                game.load.audio('burned','sounds/sm64_mario_burned.wav');
+                game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
             },
 
             create: function(){
@@ -500,7 +513,8 @@ var app = {
                 else if(spaceKey.isDown && move){
                     var aux = room2State.checkOverlap();
                     if (aux === value) {
-                        console.log('WIN!');
+                        music2 = game.add.audio('yahoo');
+                        music2.play();
                         playerx = player.getBounds().x;
                         playery = player.getBounds().y;
                         player.kill();
@@ -513,6 +527,8 @@ var app = {
                         game.state.start('hall');
                     }
                     else if (aux > 0 && aux !== prevaux) {
+                        music = game.add.audio('burned');
+                        music.play();
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
                         playerx = player.getBounds().x;
@@ -608,6 +624,9 @@ var app = {
                 game.load.image('nathy','assets/room1/nathy.png');
                 game.load.image('ramon','assets/room1/ramon.png');
                 game.load.image('wil','assets/room1/wil.png');
+
+                game.load.audio('burned','sounds/sm64_mario_burned.wav');
+                game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
             },
 
             create: function(){
@@ -712,7 +731,8 @@ var app = {
                 else if(spaceKey.isDown && move){
                     var aux = room1State.checkOverlap();
                     if (aux === value) {
-                        console.log('WIN!');
+                        music2 = game.add.audio('yahoo');
+                        music2.play();
                         playerx = player.getBounds().x;
                         playery = player.getBounds().y;
                         player.kill();
@@ -725,6 +745,8 @@ var app = {
                         game.state.start('hall');
                     }
                     else if (aux > 0 && aux !== prevaux) {
+                        music = game.add.audio('burned');
+                        music.play();
                         puntuacion -= 4;
                         scoreText.text = 'Score: '+puntuacion;
                         playerx = player.getBounds().x;
