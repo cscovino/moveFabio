@@ -2,6 +2,8 @@ var app = {
 
     score: '',
 
+    scores: {},
+
     gameOver: function(){
         sound.stop();
         $('#myModal').modal('show');
@@ -18,6 +20,16 @@ var app = {
             messagingSenderId: "858236318394"
         };
         firebase.initializeApp(config);
+
+        firebase.database().ref().on('value', function(snap){
+            if (snap.val() !== null) {
+                app.scores = snap.val();
+            }
+        });
+    },
+
+    reiniciaJuego: function(){
+        location.reload();
     },
 
     iniciaJuego: function(){
@@ -66,6 +78,7 @@ var app = {
             preload: function(){
                 game.load.spritesheet('button','assets/butsprite1.png',200,52);
                 game.load.image('inicio','assets/inicio.png');
+                game.load.image('inst','assets/inst.png');
                 game.load.audio('start','sounds/sm64_mario_press_start.wav');
             },
 
@@ -74,6 +87,7 @@ var app = {
 
                 button = game.add.button(100,280,'button',menu.actionOnClick,this,1,0,1,0);
                 game.add.sprite(105,110,'inicio');
+                game.add.sprite(105,480,'inst');
 
                 music = game.add.audio('start');
 
@@ -909,8 +923,37 @@ var app = {
 
     saveFirebase: function(){
         name = document.getElementById('name-client').value;
-        firebase.database().ref().push({name:name,score:app.score});
+        firebase.database().ref('scores').push({name:name,score:app.score});
+        app.refreshScores();
     },
+
+    refreshScores: function(){
+        //app.scores = firebase.database().ref('scores').orderByChild('score');
+        firebase.database().ref('scores').orderByChild('score').on('value', function(snap){
+            if (snap.val() !== null) {
+                app.scores = snap.val();
+            }
+        });
+        var users = $('#meets');
+        users.html('');
+        var codigo = '';
+        var codigo = '<table class="table table-bordered" id="guests3">';
+                codigo += '<tbody>';
+                    codigo += '<tr>';
+                        codigo += '<th>Name</th>';
+                        codigo += '<th>Scores</th>';
+                    codigo += '</tr>';
+                for (var key in app.scores) {
+                    codigo += '<tr>';
+                        codigo += '<td>'+app.scores[key]['name']+'</td>';
+                        codigo += '<td>'+app.scores[key]['score']+'</td>';
+                    codigo += '</tr>';
+                }
+                codigo += '</tbody>';
+            codigo += '</table>';
+        users.append(codigo);
+        $('#myModal2').modal('show');
+    }
 
 };
 
