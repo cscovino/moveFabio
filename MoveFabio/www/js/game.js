@@ -13,11 +13,9 @@ var app = {
     initFirebase: function(){
         var config = {
             apiKey: "AIzaSyDudsxzfbjNdEU7xLueKhgGtVgeaUoIx2Y",
-            authDomain: "movefabio-43d35.firebaseapp.com",
-            databaseURL: "https://movefabio-43d35.firebaseio.com",
-            projectId: "movefabio-43d35",
-            storageBucket: "movefabio-43d35.appspot.com",
-            messagingSenderId: "858236318394"
+            databaseURL: "https://movefabio-58610.firebaseio.com",
+            projectId: "movefabio-58610",
+            storageBucket: "movefabio-58610.appspot.com"
         };
         firebase.initializeApp(config);
 
@@ -75,21 +73,28 @@ var app = {
         };
 
         var menu = {
+
+            page: 1,
+
             preload: function(){
                 game.load.spritesheet('button','assets/butsprite1.png',200,52);
                 game.load.image('inicio','assets/inicio.png');
                 game.load.image('inst','assets/inst.png');
+                game.load.image('next','assets/play.png');
                 game.load.image('instructions','assets/instructions.png');
+                game.load.image('instructions2','assets/instructions2.png');
+                game.load.image('instructions3','assets/instructions3.png');
                 game.load.audio('start','sounds/sm64_mario_press_start.wav');
             },
 
             create: function(){
                 game.stage.backgroundColor = '#182d3b';
 
-                button = game.add.button(100,550,'button',menu.actionOnClick,this,1,0,1,0);
                 game.add.sprite(105,20,'inicio');
-                game.add.sprite(15,150,'instructions');
-                game.add.sprite(105,430,'inst');
+                inst = game.add.sprite(55,175,'instructions');
+                buttonN = game.add.button(340,380,'next',menu.nextClick,this);
+                game.add.sprite(105,420,'inst');
+                button = game.add.button(100,540,'button',menu.actionOnClick,this,1,0,1,0);
 
                 music = game.add.audio('start');
 
@@ -101,6 +106,29 @@ var app = {
 
             actionOnClick: function(){
                 game.state.start('hall');
+            },
+
+            nextClick: function(){
+                menu.page += 1;
+                if (menu.page === 2) {
+                    inst.destroy();
+                    buttonN.destroy();
+                    inst = game.add.sprite(55,175,'instructions2');
+                    buttonN = game.add.button(340,380,'next',menu.nextClick,this);
+                }
+                else if (menu.page === 3) {
+                    inst.destroy();
+                    buttonN.destroy();
+                    inst = game.add.sprite(55,175,'instructions3');
+                    buttonN = game.add.button(340,380,'next',menu.nextClick,this);
+                }
+                else{
+                    inst.destroy();
+                    buttonN.destroy();
+                    inst = game.add.sprite(55,175,'instructions');
+                    buttonN = game.add.button(340,380,'next',menu.nextClick,this);
+                    menu.page = 1;
+                }
             },
         };
 
@@ -250,6 +278,7 @@ var app = {
                 game.load.image('smart','assets/room3/smart.png');
                 game.load.image('sco','assets/room3/yo.png');
                 game.load.image('ysa','assets/room3/ysa.png');
+                game.load.image('hint','assets/lunchbox.png');
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
@@ -273,41 +302,65 @@ var app = {
                 desks = game.add.group();
                 desks.enableBody = true;
 
+                if (value === 1) {
+                    game.add.sprite(0,game.world.height/6 - 22,'hint');
+                }
                 cfab = chairs.create(30, game.world.height/6 - 22, 'chairfront');
                 cfab.body.immovable = true;
                 var dfab = desks.create(0, game.world.height/6 - 2, 'fab');
                 dfab.body.immovable = true;
 
+                if (value === 3) {
+                    game.add.sprite(0,game.world.height/6 + 91,'hint');
+                }
                 csmart = chairs.create(30, game.world.height/6 + 91, 'chairback');
                 csmart.body.immovable = true;
                 var dsmart = desks.create(0, game.world.height/6 + 52, 'smart');
                 dsmart.body.immovable = true;
 
+                if (value === 5) {
+                    game.add.sprite(0,game.world.height - 276,'hint');
+                }
                 cey = chairs.create(30, game.world.height - 276, 'chairback');
                 cey.body.immovable = true;
                 var dey = desks.create(0, game.world.height - 315, 'eylin');
                 dey.body.immovable = true;
 
+                if (value === 7) {
+                    game.add.sprite(0,game.world.height - 115,'hint');
+                }
                 csco = chairs.create(30, game.world.height - 115, 'chairback');
                 csco.body.immovable = true;
                 var dsco = desks.create(0, game.world.height - 153, 'sco');
                 dsco.body.immovable = true;
 
+                if (value === 2) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 - 22,'hint');
+                }
                 cysa = chairs.create(game.world.width - 89, game.world.height/6 - 22, 'chairfront');
                 cysa.body.immovable = true;
                 var dysa = desks.create(game.world.width - 120, game.world.height/6 - 2, 'ysa');
                 dysa.body.immovable = true;
 
+                if (value === 4) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 + 91,'hint');
+                }
                 cmafe = chairs.create(game.world.width - 89, game.world.height/6 + 91, 'chairback');
                 cmafe.body.immovable = true;
                 var dmafe = desks.create(game.world.width - 120, game.world.height/6 + 52, 'mafe');
                 dmafe.body.immovable = true;
 
+                if (value === 6) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 276,'hint');
+                }
                 cifig = chairs.create(game.world.width - 89, game.world.height - 276, 'chairback');
                 cifig.body.immovable = true;
                 var difig = desks.create(game.world.width - 120, game.world.height - 315, 'ifig');
                 difig.body.immovable = true;
 
+                if (value === 8) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 115,'hint');
+                }
                 cronel = chairs.create(game.world.width - 89, game.world.height - 115, 'chairback');
                 cronel.body.immovable = true;
                 var dronel = desks.create(game.world.width - 120, game.world.height - 153, 'ronel');
@@ -474,6 +527,7 @@ var app = {
                 game.load.image('marie','assets/room2/marie.png');
                 game.load.image('nacho','assets/room2/nacho.png');
                 game.load.image('oscar','assets/room2/oscar.png');
+                game.load.image('hint','assets/lunchbox.png');
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
@@ -497,41 +551,65 @@ var app = {
                 desks = game.add.group();
                 desks.enableBody = true;
 
+                if (value === 9) {
+                    game.add.sprite(0,game.world.height/6 - 4,'hint');
+                }
                 ccarlos = chairs.create(30, game.world.height/6 - 4, 'chairfront');
                 ccarlos.body.immovable = true;
                 var dcarlos = desks.create(0, game.world.height/6 + 16, 'carlos');
                 dcarlos.body.immovable = true;
 
+                if (value === 11) {
+                    game.add.sprite(0,game.world.height/6 + 109,'hint');
+                }
                 cjami = chairs.create(30, game.world.height/6 + 109, 'chairback');
                 cjami.body.immovable = true;
                 var djami = desks.create(0, game.world.height/6 + 70, 'jami');
                 djami.body.immovable = true;
 
+                if (value === 13) {
+                    game.add.sprite(0,game.world.height - 256,'hint');
+                }
                 cernesto = chairs.create(30, game.world.height - 256, 'chairfront');
                 cernesto.body.immovable = true;
                 var dernesto = desks.create(0, game.world.height - 235, 'ernesto');
                 dernesto.body.immovable = true;
 
+                if (value === 15) {
+                    game.add.sprite(0,game.world.height - 142,'hint');
+                }
                 cnacho = chairs.create(30, game.world.height - 142, 'chairback');
                 cnacho.body.immovable = true;
                 var dnacho = desks.create(0, game.world.height - 181, 'nacho');
                 dnacho.body.immovable = true;
 
+                if (value === 10) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 - 4,'hint');
+                }
                 ccdan = chairs.create(game.world.width - 89, game.world.height/6 - 4, 'chairfront');
                 ccdan.body.immovable = true;
                 var dcdan = desks.create(game.world.width - 120, game.world.height/6 + 16, 'cdan');
                 dcdan.body.immovable = true;
 
+                if (value === 12) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 + 109,'hint');
+                }
                 cmarie = chairs.create(game.world.width - 89, game.world.height/6 + 109, 'chairback');
                 cmarie.body.immovable = true;
                 var dmarie = desks.create(game.world.width - 120, game.world.height/6 + 70, 'marie');
                 dmarie.body.immovable = true;
 
+                if (value === 14) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 256,'hint');
+                }
                 coscar = chairs.create(game.world.width - 89, game.world.height - 256, 'chairfront');
                 coscar.body.immovable = true;
                 var doscar = desks.create(game.world.width - 120, game.world.height - 235, 'oscar');
                 doscar.body.immovable = true;
 
+                if (value === 16) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 142,'hint');
+                }
                 cluisa = chairs.create(game.world.width - 89, game.world.height - 142, 'chairback');
                 cluisa.body.immovable = true;
                 var dluisa = desks.create(game.world.width - 120, game.world.height - 181, 'luisa');
@@ -699,6 +777,7 @@ var app = {
                 game.load.image('nathy','assets/room1/nathy.png');
                 game.load.image('ramon','assets/room1/ramon.png');
                 game.load.image('wil','assets/room1/wil.png');
+                game.load.image('hint','assets/lunchbox.png');
 
                 game.load.audio('burned','sounds/sm64_mario_burned.wav');
                 game.load.audio('yahoo','sounds/sm64_mario_yahoo.wav');
@@ -722,45 +801,72 @@ var app = {
                 desks = game.add.group();
                 desks.enableBody = true;
 
+                if (value === 17) {
+                    game.add.sprite(0,game.world.height/6 + 6,'hint');
+                }
                 cgian = chairs.create(30, game.world.height/6 + 6, 'chairfront');
                 cgian.body.immovable = true;
                 var dgian = desks.create(0, game.world.height/6 + 26, 'gian');
                 dgian.body.immovable = true;
 
+                if (value === 18) {
+                    game.add.sprite(0,game.world.height/6 - 85,'hint');
+                }
                 cwil = chairs.create(180, game.world.height/6 - 85, 'chairfront');
                 cwil.body.immovable = true;
                 var dwil = game.add.sprite(150, game.world.height/6 - 65, 'wil');
 
+                if (value === 20) {
+                    game.add.sprite(0,game.world.height/6 + 119,'hint');
+                }
                 cmairim = chairs.create(30, game.world.height/6 + 119, 'chairback');
                 cmairim.body.immovable = true;
                 var dmairim = desks.create(0, game.world.height/6 + 80, 'mairim');
                 dmairim.body.immovable = true;
 
+                if (value === 22) {
+                    game.add.sprite(0,game.world.height - 246,'hint');
+                }
                 cjessa = chairs.create(30, game.world.height - 246, 'chairfront');
                 cjessa.body.immovable = true;
                 var djessa = desks.create(0, game.world.height - 225, 'jessa');
                 djessa.body.immovable = true;
 
+                if (value === 24) {
+                    game.add.sprite(0,game.world.height - 132,'hint');
+                }
                 cramon = chairs.create(30, game.world.height - 132, 'chairback');
                 cramon.body.immovable = true;
                 var dramon = desks.create(0, game.world.height - 171, 'ramon');
                 dramon.body.immovable = true;
 
+                if (value === 19) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 + 6,'hint');
+                }
                 clis = chairs.create(game.world.width - 89, game.world.height/6 + 6, 'chairfront');
                 clis.body.immovable = true;
                 var dlis = desks.create(game.world.width - 120, game.world.height/6 + 26, 'lis');
                 dlis.body.immovable = true;
 
+                if (value === 21) {
+                    game.add.sprite(game.world.width - 119,game.world.height/6 + 119,'hint');
+                }
                 cmari = chairs.create(game.world.width - 89, game.world.height/6 + 119, 'chairback');
                 cmari.body.immovable = true;
                 var dmari = desks.create(game.world.width - 120, game.world.height/6 + 80, 'mari');
                 dmari.body.immovable = true;
 
+                if (value === 23) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 246,'hint');
+                }
                 cmjordan = chairs.create(game.world.width - 89, game.world.height - 246, 'chairfront');
                 cmjordan.body.immovable = true;
                 var dmjordan = desks.create(game.world.width - 120, game.world.height - 225, 'mjordan');
                 dmjordan.body.immovable = true;
 
+                if (value === 25) {
+                    game.add.sprite(game.world.width - 119,game.world.height - 132,'hint');
+                }
                 cnathy = chairs.create(game.world.width - 89, game.world.height - 132, 'chairback');
                 cnathy.body.immovable = true;
                 var dnathy = desks.create(game.world.width - 120, game.world.height - 171, 'nathy');
